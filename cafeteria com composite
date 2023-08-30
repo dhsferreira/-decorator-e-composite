@@ -1,0 +1,110 @@
+
+	import java.util.ArrayList;
+	import java.util.List;
+	public class CafeDecorator {
+
+	   
+	    interface ComponenteCafe {
+	        String getNome();
+
+	        double getPreco();
+
+	        void adicionarIngrediente(ComponenteCafe cafe);
+	    }
+
+	   
+	    static class Ingrediente implements ComponenteCafe {
+	        private String nome;
+	        private double preco;
+
+	        public Ingrediente(String nome, double preco) {
+	            this.nome = nome;
+	            this.preco = preco;
+	        }
+
+	        @Override
+	        public String getNome() {
+	            return nome;
+	        }
+
+	        @Override
+	        public double getPreco() {
+	            return preco;
+	        }
+
+	        @Override
+	        public void adicionarIngrediente(ComponenteCafe cafe) {
+	           
+	        }
+	    }
+
+	  
+	    static class Combinacao implements ComponenteCafe {
+	        private String nome;
+	        private List<ComponenteCafe> ingredientes = new ArrayList<>();
+
+	        public Combinacao(String nome) {
+	            this.nome = nome;
+	        }
+
+	        public void adicionarIngrediente(ComponenteCafe ingrediente) {
+	            ingredientes.add(ingrediente);
+	        }
+
+	        @Override
+	        public String getNome() {
+	            StringBuilder sb = new StringBuilder(nome);
+	            sb.append(" (");
+
+	            for (int i = 0; i < ingredientes.size(); i++) {
+	                sb.append(ingredientes.get(i).getNome());
+	                if (i < ingredientes.size() - 1) {
+	                    sb.append(", ");
+	                }
+	            }
+
+	            sb.append(")");
+	            return sb.toString();
+	        }
+
+	        @Override
+	        public double getPreco() {
+	            double precoTotal = 0;
+	            for (ComponenteCafe ingrediente : ingredientes) {
+	                precoTotal += ingrediente.getPreco();
+	            }
+	            return precoTotal;
+	        }
+	    }
+
+	    public static void main(String[] args) {
+	        
+	        ComponenteCafe cafe = new Ingrediente("Café", 2.5);
+	        ComponenteCafe leite = new Ingrediente("Leite", 1.0);
+	        ComponenteCafe agua = new Ingrediente("Água", 0.5);
+	        ComponenteCafe acucar = new Ingrediente("Açúcar", 0.3);
+	        ComponenteCafe canela = new Ingrediente("Canela", 0.7);
+
+	        
+	        ComponenteCafe cafeComLeite = new Combinacao("Café com Leite");
+	        cafeComLeite.adicionarIngrediente(cafe);
+	        cafeComLeite.adicionarIngrediente(leite);
+
+	        ComponenteCafe cappuccino = new Combinacao("Cappuccino");
+	        cappuccino.adicionarIngrediente(cafe);
+	        cappuccino.adicionarIngrediente(leite);
+	        cappuccino.adicionarIngrediente(canela);
+
+	        
+	        System.out.println("Ingredientes e Preços:");
+	        System.out.println(cafe.getNome() + ": R$" + cafe.getPreco());
+	        System.out.println(leite.getNome() + ": R$" + leite.getPreco());
+	        System.out.println(agua.getNome() + ": R$" + agua.getPreco());
+	        System.out.println(acucar.getNome() + ": R$" + acucar.getPreco());
+	        System.out.println(canela.getNome() + ": R$" + canela.getPreco());
+
+	        System.out.println("\nCombinações e Preços:");
+	        System.out.println(cafeComLeite.getNome() + ": R$" + cafeComLeite.getPreco());
+	        System.out.println(cappuccino.getNome() + ": R$" + cappuccino.getPreco());
+	    }
+	}
