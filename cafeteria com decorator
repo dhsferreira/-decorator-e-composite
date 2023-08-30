@@ -1,0 +1,86 @@
+
+	public interface CafeDecorator {
+	    String getDescricao();
+	    double getCusto();
+	}
+
+
+public class Cafe implements CafeDecorator {
+	    private final String nome;
+	    private final double preco;
+	    private final String ingredientes;
+	    private final String tamanho;
+
+	    public Cafe(String nome, double preco, String ingredientes, String tamanho) {
+	        this.nome = nome;
+	        this.preco = preco;
+	        this.ingredientes = ingredientes;
+	        this.tamanho = tamanho;
+	    }
+
+	    @Override
+	    public String getDescricao() {
+	        return nome;
+	    }
+
+	    @Override
+	    public double getCusto() {
+	        return preco;
+	    }
+	}
+
+public class LeiteDecorator implements CafeDecorator {
+    private final Cafe cafe;
+
+    public LeiteDecorator(Cafe cafe) {
+        this.cafe = cafe;
+    }
+
+    @Override
+    public String getDescricao() {
+        return cafe.getDescricao() + " com Leite";
+    }
+
+    @Override
+    public double getCusto() {
+        return cafe.getCusto() + 1.0;
+    }
+}
+public class CappuccinoDecorator implements CafeDecorator {
+    private final Cafe cafe;
+
+    public CappuccinoDecorator(Cafe cafe) {
+        this.cafe = cafe;
+    }
+
+    @Override
+    public String getDescricao() {
+        return  "Cappuccino";
+    }
+
+    @Override
+    public double getCusto() {
+        return cafe.getCusto() + 2.0;
+    }
+}
+
+public class Main {
+	 public static void main(String[] args) {
+	       
+	        Cafe cafeSimples = new Cafe("Café Simples", 3.5, "Café moído e água quente", "Pequeno");
+
+	        Cafe cafeBasico = new Cafe("apenas cafe", 3.5, null, null);
+	        System.out.println("Café basico: R$ " +  cafeBasico.getCusto());
+	   
+	        
+	      
+	        CafeDecorator cafeComLeite = new LeiteDecorator(cafeSimples);
+	        System.out.println("Café: " + cafeComLeite.getDescricao());
+	        System.out.println("Preço: R$" + cafeComLeite.getCusto());
+
+	       
+	        CafeDecorator cappuccino = new CappuccinoDecorator(cafeSimples);
+	        System.out.println("Café: " + cappuccino.getDescricao());
+	        System.out.println("Preço: R$" + cappuccino.getCusto());
+	    }
+}
